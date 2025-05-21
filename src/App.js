@@ -75,7 +75,10 @@ function App() {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
       <div style={{ maxWidth: "800px", margin: "0 auto", backgroundColor: "#151C2B", padding: "2rem", borderRadius: "1rem" }}>
-        <h2 style={{ textAlign: "center", color: "#C44528", marginBottom: "2rem" }}>
+  <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
+  <img src="/logo-dark.jpg.jpg" alt="SalesFire Consulting Logo" style={{ height: "60px" }} />
+</div>      
+  <h2 style={{ textAlign: "center", color: "#C44528", marginBottom: "2rem" }}>
           Sales Funnel Dashboard
         </h2>
 
