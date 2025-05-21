@@ -12,8 +12,9 @@ export default function AdminPanel() {
   const { data, updateData } = useData();
   const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
   const [selectedPersona, setSelectedPersona] = useState("Operations");
+  const [clientName, setClientName] = useState("Demo Client");
 
-  const key = `${selectedMonth}_${selectedPersona}`;
+  const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
   const initialCounts = data[key] || [0, 0, 0, 0, 0, 0];
   const [counts, setCounts] = useState([...initialCounts]);
 
@@ -23,9 +24,9 @@ export default function AdminPanel() {
     setCounts(updated);
   };
 
-  const handleSave = () => {
-    updateData(selectedMonth, selectedPersona, counts);
-    alert("Data saved!");
+  const handleSave = async () => {
+    await updateData(clientName, selectedMonth, selectedPersona, counts);
+    alert("Data saved to Google Sheet!");
   };
 
   return (
@@ -34,18 +35,24 @@ export default function AdminPanel() {
         Admin Panel – Update Funnel Data
       </h3>
 
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginBottom: "1rem" }}>
-        <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} style={dropdownStyle}>
-          {months.map((m) => (
-            <option key={m}>{m}</option>
-          ))}
-        </select>
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1rem" }}>
+        <input
+          type="text"
+          placeholder="Client Name"
+          value={clientName}
+          onChange={(e) => setClientName(e.target.value)}
+          style={inputStyle}
+        />
 
-        <select value={selectedPersona} onChange={(e) => setSelectedPersona(e.target.value)} style={dropdownStyle}>
-          {personas.map((p) => (
-            <option key={p}>{p}</option>
-          ))}
-        </select>
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "space-between" }}>
+          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} style={dropdownStyle}>
+            {months.map((m) => <option key={m}>{m}</option>)}
+          </select>
+
+          <select value={selectedPersona} onChange={(e) => setSelectedPersona(e.target.value)} style={dropdownStyle}>
+            {personas.map((p) => <option key={p}>{p}</option>)}
+          </select>
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
@@ -56,13 +63,7 @@ export default function AdminPanel() {
               type="number"
               value={counts[i]}
               onChange={(e) => handleChange(i, e.target.value)}
-              style={{
-                padding: "0.5rem",
-                backgroundColor: "#2A3548",
-                color: "white",
-                border: "1px solid #39455D",
-                borderRadius: "5px"
-              }}
+              style={inputStyle}
             />
           </label>
         ))}
@@ -88,10 +89,15 @@ export default function AdminPanel() {
   );
 }
 
-const dropdownStyle = {
+const inputStyle = {
   padding: "0.5rem",
-  backgroundColor: "#1D2739",
+  backgroundColor: "#2A3548",
   color: "white",
   border: "1px solid #39455D",
   borderRadius: "5px"
+};
+
+const dropdownStyle = {
+  ...inputStyle,
+  width: "100%"
 };
