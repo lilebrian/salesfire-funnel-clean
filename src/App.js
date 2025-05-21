@@ -11,11 +11,8 @@ const months = [
 const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
 const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
 
-function Dashboard() {
-  const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
-  const [selectedPersona, setSelectedPersona] = useState("Operations");
+function Dashboard({ selectedMonth, selectedPersona, onMonthChange, onPersonaChange }) {
   const { data } = useData();
-
   const key = `${selectedMonth}_${selectedPersona}`;
   const counts = data[key] || [0, 0, 0, 0, 0, 0];
 
@@ -30,7 +27,7 @@ function Dashboard() {
     counts[0] > 0 ? ((counts[5] / counts[0]) * 100).toFixed(1) + "%" : "0%";
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", backgroundColor: "#0B111D", padding: "2rem", borderRadius: "1rem" }}>
+    <div style={{ flex: 2, backgroundColor: "#0B111D", padding: "2rem", borderRadius: "1rem" }}>
       <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
         <img src="/logo-dark.jpg.jpg" alt="SalesFire Consulting Logo" style={{ height: "100px" }} />
       </div>
@@ -44,7 +41,7 @@ function Dashboard() {
           <label style={{ fontSize: "0.9rem", color: "#ccc" }}>Select Month</label>
           <select
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
+            onChange={(e) => onMonthChange(e.target.value)}
             style={dropdownStyle}
           >
             {months.map((month) => (
@@ -56,7 +53,7 @@ function Dashboard() {
           <label style={{ fontSize: "0.9rem", color: "#ccc" }}>Select Persona</label>
           <select
             value={selectedPersona}
-            onChange={(e) => setSelectedPersona(e.target.value)}
+            onChange={(e) => onPersonaChange(e.target.value)}
             style={dropdownStyle}
           >
             {personas.map((persona) => (
@@ -104,12 +101,26 @@ const dropdownStyle = {
 };
 
 export default function App() {
+  const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
+  const [selectedPersona, setSelectedPersona] = useState("Operations");
+
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
       <DataProvider>
-       <Dashboard />
-       <AdminPanel />
+        <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", maxWidth: "1200px", margin: "0 auto" }}>
+          <div style={{ flex: 1 }}>
+            <AdminPanel />
+          </div>
+          <Dashboard
+            selectedMonth={selectedMonth}
+            selectedPersona={selectedPersona}
+            onMonthChange={setSelectedMonth}
+            onPersonaChange={setSelectedPersona}
+          />
+        </div>
       </DataProvider>
     </div>
   );
 }
+
+         
