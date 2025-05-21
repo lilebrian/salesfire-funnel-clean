@@ -11,9 +11,9 @@ const months = [
 const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
 const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
 
-function Dashboard({ selectedMonth, selectedPersona, onMonthChange, onPersonaChange }) {
+function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, onPersonaChange, onClientChange }) {
   const { data } = useData();
-  const key = `${selectedMonth}_${selectedPersona}`;
+  const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
   const counts = data[key] || [0, 0, 0, 0, 0, 0];
 
   const conversionRates = counts.map((count, i) => {
@@ -36,36 +36,38 @@ function Dashboard({ selectedMonth, selectedPersona, onMonthChange, onPersonaCha
       </h2>
 
       {/* Filter Controls */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginBottom: "2rem" }}>
-        <div>
-          <label style={{ fontSize: "0.9rem", color: "#ccc" }}>Select Month</label>
-          <select
-            value={selectedMonth}
-            onChange={(e) => onMonthChange(e.target.value)}
-            style={dropdownStyle}
-          >
-            {months.map((month) => (
-              <option key={month}>{month}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: "0.9rem", color: "#ccc" }}>Select Persona</label>
-          <select
-            value={selectedPersona}
-            onChange={(e) => onPersonaChange(e.target.value)}
-            style={dropdownStyle}
-          >
-            {personas.map((persona) => (
-              <option key={persona}>{persona}</option>
-            ))}
-          </select>
-        </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
+        <input
+          type="text"
+          placeholder="Client Name"
+          value={clientName}
+          onChange={(e) => onClientChange(e.target.value)}
+          style={dropdownStyle}
+        />
+
+        <select
+          value={selectedMonth}
+          onChange={(e) => onMonthChange(e.target.value)}
+          style={dropdownStyle}
+        >
+          {months.map((month) => (
+            <option key={month}>{month}</option>
+          ))}
+        </select>
+
+        <select
+          value={selectedPersona}
+          onChange={(e) => onPersonaChange(e.target.value)}
+          style={dropdownStyle}
+        >
+          {personas.map((persona) => (
+            <option key={persona}>{persona}</option>
+          ))}
+        </select>
       </div>
 
       <FunnelVisualizer data={counts} stages={stages} />
 
-      {/* Table Summary */}
       <table style={{ width: "100%", textAlign: "left", borderSpacing: "0 10px" }}>
         <thead>
           <tr style={{ color: "#ccc", fontSize: "0.9rem" }}>
@@ -103,6 +105,7 @@ const dropdownStyle = {
 export default function App() {
   const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
   const [selectedPersona, setSelectedPersona] = useState("Operations");
+  const [clientName, setClientName] = useState("Demo Client");
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
@@ -111,10 +114,11 @@ export default function App() {
           <div style={{ flex: 1, marginTop: "18rem" }}>
             <AdminPanel />
           </div>
-  
           <Dashboard
+            clientName={clientName}
             selectedMonth={selectedMonth}
             selectedPersona={selectedPersona}
+            onClientChange={setClientName}
             onMonthChange={setSelectedMonth}
             onPersonaChange={setSelectedPersona}
           />
@@ -123,5 +127,3 @@ export default function App() {
     </div>
   );
 }
-
-         
