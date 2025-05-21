@@ -2,53 +2,36 @@ import './index.css';
 import { useState } from 'react';
 import FunnelVisualizer from './FunnelChart';
 
-const sampleData = [
-  {
-    month: "Jan 2025",
-    persona: "Operations",
-    counts: [500, 300, 180, 90, 45, 20],
-  },
-  {
-    month: "Feb 2025",
-    persona: "Operations",
-    counts: [550, 330, 198, 99, 50, 22],
-  },
-  {
-    month: "Mar 2025",
-    persona: "Operations",
-    counts: [450, 270, 160, 80, 40, 18],
-  },
-  {
-    month: "Jan 2025",
-    persona: "Project Management",
-    counts: [400, 250, 140, 70, 35, 15],
-  },
-  {
-    month: "Feb 2025",
-    persona: "Project Management",
-    counts: [440, 275, 154, 77, 39, 17],
-  },
-  {
-    month: "Mar 2025",
-    persona: "Project Management",
-    counts: [360, 225, 126, 63, 31, 13],
-  },
-  {
-    month: "Jan 2025",
-    persona: "HR/Talent Acquisition",
-    counts: [350, 200, 120, 60, 30, 12],
-  },
-  {
-    month: "Feb 2025",
-    persona: "HR/Talent Acquisition",
-    counts: [385, 220, 132, 66, 33, 13],
-  },
-  {
-    month: "Mar 2025",
-    persona: "HR/Talent Acquisition",
-    counts: [320, 185, 111, 55, 28, 10],
-  },
+const months = [
+  "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025", "May 2025", "Jun 2025",
+  "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"
 ];
+
+const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
+
+const sampleData = [];
+
+personas.forEach((persona) => {
+  months.forEach((month) => {
+    sampleData.push({
+      month,
+      persona,
+      counts:
+        month === "Jan 2025" || month === "Feb 2025" || month === "Mar 2025"
+          ? generateSampleCounts(persona, month)
+          : [0, 0, 0, 0, 0, 0],
+    });
+  });
+});
+
+function generateSampleCounts(persona, month) {
+  const seed = {
+    "Operations": { "Jan 2025": [500, 300, 180, 90, 45, 20], "Feb 2025": [550, 330, 198, 99, 50, 22], "Mar 2025": [450, 270, 160, 80, 40, 18] },
+    "Project Management": { "Jan 2025": [400, 250, 140, 70, 35, 15], "Feb 2025": [440, 275, 154, 77, 39, 17], "Mar 2025": [360, 225, 126, 63, 31, 13] },
+    "HR/Talent Acquisition": { "Jan 2025": [350, 200, 120, 60, 30, 12], "Feb 2025": [385, 220, 132, 66, 33, 13], "Mar 2025": [320, 185, 111, 55, 28, 10] },
+  };
+  return seed[persona][month] || [0, 0, 0, 0, 0, 0];
+}
 
 const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
 
@@ -75,10 +58,10 @@ function App() {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
       <div style={{ maxWidth: "800px", margin: "0 auto", backgroundColor: "#0B111D", padding: "2rem", borderRadius: "1rem" }}>
-  <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
-  <img src="/logo-dark.jpg.jpg" alt="SalesFire Consulting Logo" style={{ height: "100px" }} />
-</div>      
-  <h2 style={{ textAlign: "center", color: "#C44528", marginBottom: "2rem" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
+          <img src="/logo-dark.jpg.jpg" alt="SalesFire Consulting Logo" style={{ height: "100px" }} />
+        </div>
+        <h2 style={{ textAlign: "center", color: "#C44528", marginBottom: "2rem" }}>
           Sales Funnel Dashboard
         </h2>
 
@@ -91,7 +74,7 @@ function App() {
               onChange={(e) => setSelectedMonth(e.target.value)}
               style={{ padding: "0.5rem", backgroundColor: "#1D2739", color: "white", border: "1px solid #2A3548", borderRadius: "5px" }}
             >
-              {[...new Set(sampleData.map((d) => d.month))].map((month) => (
+              {months.map((month) => (
                 <option key={month}>{month}</option>
               ))}
             </select>
@@ -103,7 +86,7 @@ function App() {
               onChange={(e) => setSelectedPersona(e.target.value)}
               style={{ padding: "0.5rem", backgroundColor: "#1D2739", color: "white", border: "1px solid #2A3548", borderRadius: "5px" }}
             >
-              {[...new Set(sampleData.map((d) => d.persona))].map((persona) => (
+              {personas.map((persona) => (
                 <option key={persona}>{persona}</option>
               ))}
             </select>
@@ -142,3 +125,7 @@ function App() {
 }
 
 export default App;
+
+  
+
+ 
