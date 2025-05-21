@@ -107,8 +107,8 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
       <DataProvider>
-        <AdminPanel />
-        <Dashboard />
+       <Dashboard />
+       <AdminPanel />
       </DataProvider>
     </div>
   );
