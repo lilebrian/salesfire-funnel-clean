@@ -1,5 +1,6 @@
 import './index.css';
 import { useState } from 'react';
+import FunnelVisualizer from './FunnelChart';
 
 const sampleData = [
   {
@@ -78,6 +79,7 @@ function App() {
           Sales Funnel Dashboard
         </h2>
 
+        {/* Filter Controls */}
         <div style={{ display: "flex", justifyContent: "center", gap: "2rem", marginBottom: "2rem" }}>
           <div>
             <label style={{ fontSize: "0.9rem", color: "#ccc" }}>Select Month</label>
@@ -105,6 +107,10 @@ function App() {
           </div>
         </div>
 
+        {/* Visual Funnel Chart */}
+        <FunnelVisualizer data={counts} stages={stages} />
+
+        {/* Table Summary */}
         <table style={{ width: "100%", textAlign: "left", borderSpacing: "0 10px" }}>
           <thead>
             <tr style={{ color: "#ccc", fontSize: "0.9rem" }}>
