@@ -108,7 +108,7 @@ export default function App() {
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
       <DataProvider>
         <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ flex: 1, marginTop: "20rem" }}>
+          <div style={{ flex: 1, marginTop: "18rem" }}>
             <AdminPanel />
           </div>
   
