@@ -3,13 +3,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
-// Sheetbest endpoint for both read & write
 const API_URL = "https://api.sheetbest.com/sheets/9b1d9cfc-cf54-483a-a7d5-4bb7663a65e4";
 
 export function DataProvider({ children }) {
   const [data, setData] = useState({});
 
-  useEffect(() => {
+  useEffect(function () {
     fetch(API_URL)
       .then(function (res) { return res.json(); })
       .then(function (rows) {
@@ -27,40 +26,45 @@ export function DataProvider({ children }) {
         });
         setData(structured);
       })
-      .catch(function (e) {
-        console.error("Read error:", e);
-      });
+      .catch(function (e) { console.error("Read error:", e); });
   }, []);
 
   async function updateData(clientName, month, persona, counts) {
     var key = clientName + "_" + month + "_" + persona;
-    var newData = Object.assign({}, data, { [key]: counts });
+    var newData = {};
+    for (var k in data) newData[k] = data[k];
+    newData[key] = counts;
     setData(newData);
 
-    try {
-      var row = [{
-        "Client Name": clientName,
-        "Month": month,
-        "Persona": persona,
-        "Outreach": counts && counts[0] != null ? counts[0] : 0,
-        "Connections": counts && counts[1] != null ? counts[1] : 0,
-        "Replies": counts && counts[2] != null ? counts[2] : 0,
-        "Meetings": counts && counts[3] != null ? counts[3] : 0,
-        "Proposals": counts && counts[4] != null ? counts[4] : 0,
-        "Contracts": counts && counts[5] != null ? counts[5] : 0
-      }];
+    var outreach = counts && counts[0] != null ? counts[0] : 0;
+    var connections = counts && counts[1] != null ? counts[1] : 0;
+    var replies = counts && counts[2] != null ? counts[2] : 0;
+    var meetings = counts && counts[3] != null ? counts[3] : 0;
+    var proposals = counts && counts[4] != null ? counts[4] : 0;
+    var contracts = counts && counts[5] != null ? counts[5] : 0;
 
+    var row = [{
+      "Client Name": clientName,
+      "Month": month,
+      "Persona": persona,
+      "Outreach": outreach,
+      "Connections": connections,
+      "Replies": replies,
+      "Meetings": meetings,
+      "Proposals": proposals,
+      "Contracts": contracts
+    }];
+
+    try {
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(row)
       });
-
       if (!res.ok) {
         const text = await res.text();
         console.error("Sheetbest write failed:", res.status, text);
       } else {
-        // Optional: inspect echo
         await res.json().catch(function () { return null; });
       }
     } catch (e) {
@@ -74,4 +78,5 @@ export function DataProvider({ children }) {
     </DataContext.Provider>
   );
 }
+
 
