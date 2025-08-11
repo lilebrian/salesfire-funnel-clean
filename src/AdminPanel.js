@@ -12,7 +12,7 @@ export default function AdminPanel() {
   const { data, updateData } = useData();
   const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
   const [selectedPersona, setSelectedPersona] = useState("Operations");
-  const [clientName, setClientName] = useState("Demo Client");
+  const [clientName, setClientName] = useState("RTA Consulting");
 
   const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
   const initialCounts = data[key] || [0, 0, 0, 0, 0, 0];
