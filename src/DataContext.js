@@ -35,43 +35,4 @@ export function DataProvider({ children }) {
     "Client Name": clientName,
     "Month": month,
     "Persona": persona,
-    "Outreach": counts[0] ?? 0,
-    "Connections": counts[1] ?? 0,
-    "Replies": counts[2] ?? 0,
-    "Meetings": counts[3] ?? 0,
-    "Proposals": counts[4] ?? 0,
-    "Contracts": counts[5] ?? 0
-  });
-
-  const updateData = async (clientName, month, persona, counts) => {
-    const key = `${clientName}_${month}_${persona}`;
-    const newData = { ...data, [key]: counts };
-    setData(newData);
-
-    try {
-      const payload = [toRow(clientName, month, persona, counts)];
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        console.error("Sheetbest write failed:", res.status, text);
-      } else {
-        // Optional: inspect the echo
-        await res.json().catch(() => null);
-      }
-    } catch (e) {
-      console.error("Write error:", e);
-    }
-  };
-
-  return (
-    <DataContext.Provider value={{ data, updateData }}>
-      {children}
-    </DataContext.Provider>
-  );
-}
-
+    "Outreach": count
